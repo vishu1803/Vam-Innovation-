@@ -3,7 +3,7 @@
 import { useState, useRef } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
-import HeroAnimation from "@/components/HeroAnimation";
+import MainWebsite from "@/components/MainWebsite";
 import Hyperspeed from "@/components/Hyperspeed";
 
 // Register GSAP plugins
@@ -104,14 +104,14 @@ export default function Home() {
             ref={heroContentRef}
             className="absolute inset-0 z-10 flex flex-col items-center justify-center"
           >
-            <div className="pointer-events-none flex flex-col items-center">
-              <h1 className="text-white text-6xl md:text-8xl font-bold tracking-tighter mix-blend-difference">VAM INNOVATION </h1>
-              <p className="text-white/70 mt-4 text-xl tracking-widest uppercase mix-blend-difference">Let's Build With Us</p>
+            <div className="pointer-events-none flex flex-col items-center text-center px-4 max-w-4xl">
+              <h1 className="text-white text-6xl md:text-6xl lg:text-7xl font-black tracking-tighter mix-blend-difference">VAM TECH</h1>
+              <p className="text-white/70 mt-6 text-lg md:text-2xl font-light mix-blend-difference max-w-2xl">Your Vision.Our Innovation.</p>
             </div>
 
             <button
               onClick={startTransition}
-              className="mt-12 px-8 py-4 bg-white text-black font-semibold rounded-full hover:scale-105 transition-transform duration-300 ease-out shadow-[0_0_20px_rgba(255,255,255,0.3)] z-20 cursor-pointer"
+              className="mt-12 px-10 py-5 bg-white text-black font-semibold rounded-full hover:scale-105 transition-transform duration-300 ease-out shadow-[0_0_20px_rgba(255,255,255,0.3)] z-20 cursor-pointer tracking-widest uppercase text-sm"
             >
               Get Started
             </button>
@@ -119,13 +119,13 @@ export default function Home() {
         </section>
       )}
 
-      {/* SECTION 2: Storytelling Animation */}
+      {/* SECTION 2: Premium Portfolio Redesign */}
       {activeScene === "portfolio" && (
         <section
           ref={portfolioContainerRef}
-          className="absolute inset-0 w-full h-full bg-[#0a0a0a]"
+          className="absolute inset-0 w-full h-[100dvh] bg-[#0a0a0a] overflow-hidden"
         >
-          <HeroAnimation />
+          <MainWebsite />
         </section>
       )}
     </main>
