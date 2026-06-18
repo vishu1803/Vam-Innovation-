@@ -5,6 +5,7 @@ import Lenis from "lenis";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
+import { useState } from "react";
 import Storytelling from "./sections/Storytelling";
 import Projects from "./sections/Projects";
 import Services from "./sections/Services";
@@ -13,14 +14,19 @@ import SelectedWork from "./sections/SelectedWork";
 import About from "./sections/About";
 import Contact from "./sections/Contact";
 
-gsap.registerPlugin(ScrollTrigger);
-
 export default function MainWebsite() {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
     if (!wrapperRef.current || !contentRef.current) return;
+
+    gsap.registerPlugin(ScrollTrigger);
+    ScrollTrigger.defaults({
+      scroller: wrapperRef.current,
+    });
+    console.log("[Production Debug] ScrollTrigger registered and defaults set to wrapperRef");
 
     const lenis = new Lenis({
       wrapper: wrapperRef.current,
@@ -36,21 +42,26 @@ export default function MainWebsite() {
 
     lenis.on("scroll", ScrollTrigger.update);
 
-    gsap.ticker.add((time) => {
+    const raf = (time: number) => {
       lenis.raf(time * 1000);
-    });
+    };
+    gsap.ticker.add(raf);
 
     gsap.ticker.lagSmoothing(0);
 
-    // Tell ScrollTrigger to use this lenis instance for its scroller
-    ScrollTrigger.defaults({
-      scroller: wrapperRef.current,
-    });
+    console.log("[Production Debug] Lenis initialized");
+    
+    // Force a ScrollTrigger refresh after a short delay to ensure everything is painted and heights are correct
+    const refreshTimeout = setTimeout(() => {
+      console.log("[Production Debug] Refreshing ScrollTrigger to recalculate pinned heights");
+      ScrollTrigger.refresh();
+    }, 100);
+
+    setIsMounted(true);
 
     return () => {
-      gsap.ticker.remove((time) => {
-        lenis.raf(time * 1000);
-      });
+      clearTimeout(refreshTimeout);
+      gsap.ticker.remove(raf);
       lenis.destroy();
       ScrollTrigger.killAll();
     };
@@ -59,16 +70,20 @@ export default function MainWebsite() {
   return (
     <div
       ref={wrapperRef}
-      className="w-full h-full overflow-y-auto overflow-x-hidden bg-[#050505] text-white no-scrollbar"
+      className="main-scroller w-full h-full overflow-y-auto overflow-x-hidden bg-[#050505] text-white no-scrollbar"
     >
       <div ref={contentRef} className="w-full min-h-screen">
-        <Storytelling />
-        <Projects />
-        <Services />
-        <Process />
-        <SelectedWork />
-        <About />
-        <Contact />
+        {isMounted && (
+          <>
+            <Storytelling />
+            <Projects />
+            <Services />
+            <Process />
+            <SelectedWork />
+            <About />
+            <Contact />
+          </>
+        )}
       </div>
     </div>
   );

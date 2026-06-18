@@ -26,6 +26,10 @@ export default function About() {
 
   useGSAP(() => {
     const cardElements = gsap.utils.toArray(".feature-card") as HTMLElement[];
+    console.log(`[Production Debug] About Section: ${cardElements.length} cards detected.`);
+    if (pinRef.current) {
+      console.log("[Production Debug] About Section: Pin container detected.");
+    }
     
     // Set initial states for cards
     // Card 1 is visible in the center with full shadow

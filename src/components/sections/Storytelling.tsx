@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -8,22 +8,27 @@ import SplitType from "split-type";
 
 const animatedText = "where technology and innovation come together to help businesses grow. We are a team of passionate tech professionals focused on building modern websites, web applications, and digital solutions that strengthen your online presence, expand your reach, and increase your revenue.";
 
-// Simple random particle generator for background
-const particles = Array.from({ length: 30 }).map((_, i) => ({
-  id: i,
-  size: Math.random() * 3 + 1,
-  x: Math.random() * 100,
-  y: Math.random() * 100,
-  duration: Math.random() * 20 + 20,
-  delay: Math.random() * -20,
-}));
-
 export default function Storytelling() {
   const containerRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLParagraphElement>(null);
+  const [particles, setParticles] = useState<any[]>([]);
+
+  useEffect(() => {
+    setParticles(
+      Array.from({ length: 30 }).map((_, i) => ({
+        id: i,
+        size: Math.random() * 3 + 1,
+        x: Math.random() * 100,
+        y: Math.random() * 100,
+        duration: Math.random() * 20 + 20,
+        delay: Math.random() * -20,
+      }))
+    );
+  }, []);
 
   useGSAP(() => {
     if (!textRef.current) return;
+    console.log("[Production Debug] Storytelling Section: Text element detected, initializing SplitType.");
 
     // Split text into words
     const splitText = new SplitType(textRef.current, { types: "words" });
