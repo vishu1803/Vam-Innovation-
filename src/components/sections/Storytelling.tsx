@@ -11,6 +11,8 @@ const animatedText = "where technology and innovation come together to help busi
 export default function Storytelling() {
   const containerRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLParagraphElement>(null);
+  const logoRef = useRef<HTMLDivElement>(null);
+  const textContainerRef = useRef<HTMLDivElement>(null);
   const [particles, setParticles] = useState<any[]>([]);
 
   useEffect(() => {
@@ -27,7 +29,7 @@ export default function Storytelling() {
   }, []);
 
   useGSAP(() => {
-    if (!textRef.current) return;
+    if (!textRef.current || !logoRef.current || !textContainerRef.current) return;
     console.log("[Production Debug] Storytelling Section: Text element detected, initializing SplitType.");
 
     // Split text into words
@@ -39,25 +41,55 @@ export default function Storytelling() {
       filter: "blur(1px)"
     });
 
+    // Set initial text container state (invisible)
+    gsap.set(textContainerRef.current, {
+      opacity: 0,
+      x: -30
+    });
+
+    // Set initial logo container state (perfectly centered)
+    gsap.set(logoRef.current, {
+      left: "50%",
+      top: "50%",
+      xPercent: -50,
+      yPercent: -50,
+    });
+
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: containerRef.current,
         pin: true,
         start: "top top",
-        end: "+=200%", // The amount of scroll distance to scrub through
+        end: "+=300%", // Increased scroll distance for multiple phases
         scrub: 1,
         refreshPriority: 1,
       }
     });
 
-    // Reveal words progressively
+    // PHASE 1: Logo shifts right, text container fades in
+    tl.to(logoRef.current, {
+      x: "25vw",
+      scale: 0.6,
+      opacity: 0.3,
+      duration: 1.5,
+      ease: "power2.inOut"
+    }, 0);
+
+    tl.to(textContainerRef.current, {
+      opacity: 1,
+      x: 0,
+      duration: 1.5,
+      ease: "power2.out"
+    }, 0);
+
+    // PHASE 2: Reveal words progressively
     tl.to(splitText.words, {
       opacity: 1,
       filter: "blur(0px)",
-      duration: 1,
-      stagger: 0.2,
+      duration: 3,
+      stagger: 0.15,
       ease: "power2.out",
-    });
+    }, 1.5); // Starts after Phase 1 finishes
 
     // Cleanup SplitType on unmount
     return () => {
@@ -98,14 +130,23 @@ export default function Storytelling() {
       `}</style>
 
       {/* Text Container */}
-      <div className="z-10 w-full md:w-[45vw] max-w-[850px] font-mono text-[20px] md:text-[28px] leading-[1.8] tracking-[0.02em] text-white">
-        <p className="mb-8">
+      <div ref={textContainerRef} className="z-10 w-full md:w-[45vw] max-w-[850px] text-[20px] md:text-[28px] leading-[1.8] tracking-[0.02em] text-white flex flex-col items-start italic" style={{ fontFamily: 'Consolas, "Lucida Console", monospace' }}>
+        <p className="mb-5">
           Hello,<br />
           Welcome to VamTech
         </p>
         <p ref={textRef}>
           {animatedText}
         </p>
+      </div>
+
+      {/* Logo Container - Initial Center, shifted Right by GSAP */}
+      <div ref={logoRef} className="hidden md:flex absolute z-0 opacity-100 pointer-events-none mix-blend-screen">
+        <img
+          src="/images/vam-logo.svg"
+          alt="VAM Logo"
+          className="w-[40vw] max-w-[600px] object-contain drop-shadow-[0_0_40px_rgba(212,175,55,0.3)]"
+        />
       </div>
     </section>
   );

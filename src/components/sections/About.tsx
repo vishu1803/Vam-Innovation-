@@ -7,8 +7,16 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 const cards = [
   {
-    title: "1. Clean Build",
-    desc: "Build fast, modern websites with clean code, optimized performance, and scalable architecture."
+    title: "1. About Us",
+    desc: `const developer = {
+  name: "Vishwanath Nishad",
+  role: "Full Stack Developer",
+  specialization: "Backend Engineering",
+  stack: ["Python", "FastAPI", "Next.js", "Node.js", "PostgreSQL"],
+  leetcode: "300+ Problems Solved",
+  focus: ["System Design", "AI Development"],
+  mission: "Building scalable products that solve real problems"
+}`
   },
   {
     title: "2. Stunning Design",
@@ -30,31 +38,31 @@ export default function About() {
     if (pinRef.current) {
       console.log("[Production Debug] About Section: Pin container detected.");
     }
-    
+
     // Set initial states for cards
     // Card 1 is visible in the center with full shadow
-    gsap.set(cardElements[0], { 
-      y: 0, 
-      zIndex: 10, 
-      scale: 1, 
-      opacity: 1, 
-      boxShadow: "0px 0px 40px rgba(0,255,136,0.15)" 
+    gsap.set(cardElements[0], {
+      y: 0,
+      zIndex: 10,
+      scale: 1,
+      opacity: 1,
+      boxShadow: "0px 0px 40px rgba(0,255,136,0.15)"
     });
-    
+
     // Cards 2 and 3 are completely hidden below the viewport
-    gsap.set(cardElements[1], { 
-      y: "150vh", 
-      zIndex: 20, 
-      scale: 1, 
-      opacity: 1, 
-      boxShadow: "0px 0px 40px rgba(0,255,136,0.15)" 
+    gsap.set(cardElements[1], {
+      y: "150vh",
+      zIndex: 20,
+      scale: 1,
+      opacity: 1,
+      boxShadow: "0px 0px 40px rgba(0,255,136,0.15)"
     });
-    gsap.set(cardElements[2], { 
-      y: "150vh", 
-      zIndex: 30, 
-      scale: 1, 
-      opacity: 1, 
-      boxShadow: "0px 0px 40px rgba(0,255,136,0.15)" 
+    gsap.set(cardElements[2], {
+      y: "150vh",
+      zIndex: 30,
+      scale: 1,
+      opacity: 1,
+      boxShadow: "0px 0px 40px rgba(0,255,136,0.15)"
     });
 
     const tl = gsap.timeline({
@@ -76,14 +84,14 @@ export default function About() {
       duration: 1,
       ease: "power2.inOut"
     }, "card2")
-    .to(cardElements[0], {
-      scale: 0.98,
-      y: 20,
-      opacity: 0.95,
-      boxShadow: "0px 0px 20px rgba(0,255,136,0.08)",
-      duration: 1,
-      ease: "power2.inOut"
-    }, "card2");
+      .to(cardElements[0], {
+        scale: 0.98,
+        y: 20,
+        opacity: 0.95,
+        boxShadow: "0px 0px 20px rgba(0,255,136,0.08)",
+        duration: 1,
+        ease: "power2.inOut"
+      }, "card2");
 
     // Pause on Card 2
     tl.to({}, { duration: 0.2 });
@@ -94,22 +102,22 @@ export default function About() {
       duration: 1,
       ease: "power2.inOut"
     }, "card3")
-    .to(cardElements[1], {
-      scale: 0.98,
-      y: 20,
-      opacity: 0.95,
-      boxShadow: "0px 0px 20px rgba(0,255,136,0.08)",
-      duration: 1,
-      ease: "power2.inOut"
-    }, "card3")
-    .to(cardElements[0], {
-      scale: 0.96,
-      y: 40,
-      opacity: 0.9,
-      boxShadow: "0px 0px 10px rgba(0,255,136,0.04)",
-      duration: 1,
-      ease: "power2.inOut"
-    }, "card3");
+      .to(cardElements[1], {
+        scale: 0.98,
+        y: 20,
+        opacity: 0.95,
+        boxShadow: "0px 0px 20px rgba(0,255,136,0.08)",
+        duration: 1,
+        ease: "power2.inOut"
+      }, "card3")
+      .to(cardElements[0], {
+        scale: 0.96,
+        y: 40,
+        opacity: 0.9,
+        boxShadow: "0px 0px 10px rgba(0,255,136,0.04)",
+        duration: 1,
+        ease: "power2.inOut"
+      }, "card3");
 
     // Add a final pause so Card 3 stays visible before unpinning
     tl.to({}, { duration: 0.2 });
@@ -118,20 +126,23 @@ export default function About() {
 
   return (
     <section ref={containerRef} className="w-full bg-[#000000]">
+      <div className="w-full px-6 md:px-12 lg:px-24 pt-24 md:pt-32 pb-8">
+        <h2 className="text-4xl md:text-6xl font-medium tracking-tight text-white mb-4">About Us</h2>
+        <p className="text-xl text-gray-400 font-mono">Who we are and what we stand for.</p>
+      </div>
+
       {/* Pinned Card Stack Section */}
       <div
         ref={pinRef}
         className="w-full h-screen flex items-center justify-center relative overflow-hidden"
       >
+
         {cards.map((card, index) => (
           <div
             key={index}
-            className="feature-card absolute w-[90vw] md:w-[70vw] h-[60vh] md:h-[75vh] bg-black border border-[#00ff88] rounded-lg flex flex-col justify-start p-10 md:p-20"
+            className="feature-card absolute w-[95vw] md:w-[75vw] h-[70vh] md:h-[80vh] bg-black border border-[#00ff88] rounded-lg flex flex-col justify-start p-6 md:p-16 overflow-y-auto no-scrollbar"
           >
-            <h4 className="text-[#00ff88] font-mono text-3xl md:text-5xl font-medium tracking-tight mb-8 md:mb-12">
-              {card.title}
-            </h4>
-            <p className="text-white/80 font-mono text-xl md:text-3xl leading-relaxed md:leading-[1.8] max-w-4xl tracking-[0.02em]">
+            <p className="text-white/80 font-mono text-[15px] md:text-2xl leading-relaxed md:leading-[1.8] max-w-4xl tracking-[0.02em] whitespace-pre-wrap">
               {card.desc}
             </p>
           </div>
